@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>选项卡--面向对象</title>
+	<style>
+		body{font-size: 14px;color:#333;}
+		*{margin:0;padding:0;}
+		a{text-decoration: none;}
+		ul{list-style: none;}
+
+		.tablist{width: 600px;height:200px;margin:20px auto;}
+		.tablist .menus{margin-bottom:10px;height: 40px;line-height: 40px;background-color: #f1f1f1;border:1px solid #ccc;}
+		.tablist .menus a{display:inline-block;height:100%;padding:0 20px;border-top: 2px solid transparent;margin-top:-1px; border-left: 1px solid transparent;border-right: 1px solid transparent;}
+		.tablist .menus a.current{ background: #fff;border-top:2px solid #f40;border-left: 1px solid #ccc;border-right: 1px solid #ccc;}
+		.tablist .tabs{height: 150px;}
+		
+		.three{width: 400px;}
+	</style>
+
+	<script>
+	window.onload = function(){
+		//定义一个构造器 把选项卡的id当做参数传进去
+		function Tab(tabid){
+			//把new Tab的对象this保存起来
+			var that = this;
+			this.tablist = document.getElementById(tabid);
+			//后面获取通过前面的对象获取到所需要的，原因是缩小范围更精确
+			this.links   = this.tablist.querySelector('.menus').querySelectorAll('a');
+			this.lis     = this.tablist.querySelector('.tabs').querySelectorAll('li');
+
+			
+			for(var i=0;i<this.links.length;i++){
+				//保存当前索引值  这里的this代表后面new Tab的那个对象
+				this.links[i].index = i;
+
+				this.links[i].onmouseenter = function(){
+					//这里面的this代表 this.links[i]  that代表new Tab的对象
+					that.showTab(this.index);
+				}
+				
+			}
+
+		}
+
+		Tab.prototype.showTab = function(currentIndex){
+			//所有的a链接都不加current类，所有的li都隐藏
+			for(var i=0;i<this.links.length;i++){
+				this.links[i].className = '';
+				this.lis[i].style.display = "none";
+			}
+			//当前a链接添加类，相对应的li显示
+			this.links[currentIndex].className   = 'current';
+			this.lis[currentIndex].style.display = 'block';
+				
+		}
+
+		//创建对象 并传参数
+		var f1 = new Tab("tablist1");
+		var f2 = new Tab("tablist2");
+	}
+	</script>
+</head>
+<body>
+	<div class="tablist" id="tablist1">
+		<div class="menus">
+			<a class="current" href="">选项1</a>
+			<a href="">选项2</a>
+			<a href="">选项3</a>
+			<a href="">选项4</a>
+		</div>
+		<ul class="tabs">
+			<li>选项1的内容</li>
+			<li>选项2的内容</li>
+			<li>选项3的内容</li>
+			<li>选项4的内容</li>
+		</ul>
+	</div>
+
+
+	<div class="tablist three" id="tablist2">
+		<div class="menus">
+			<a class="current" href="">选项1</a>
+			<a href="">选项2</a>
+			<a href="">选项3</a>
+			
+		</div>
+		<ul class="tabs">
+			<li>选项1的内容</li>
+			<li>选项2的内容</li>
+			<li>选项3的内容</li>
+		</ul>
+	</div>
+
+</body>
+</html>
